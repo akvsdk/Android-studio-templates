@@ -1,5 +1,7 @@
 package ${packageName}.${Model}.bean;
 
+import java.io.Serializable;
+
  /**
  * Date:  ${DATE}
  * version:  V1.0
