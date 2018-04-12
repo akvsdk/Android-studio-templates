@@ -1,0 +1,22 @@
+ext {
+    configuration = [
+            buildToolsVersion: "27.0.3",
+            compileVersion   : 27,
+            minSdk           : 15,
+            targetSdk        : 27,
+            versionCode      : 1,
+            versionName      : "1.0.0",
+            kotlin_version      : "1.2.31",
+            applicationId      : "com.j1ang.demo",
+    ]
+
+
+    libraries = [
+            supportVersion   : "27.+",
+            multidex         : "1.0.3",
+            butterknife      : "8.8.1",
+            glidetransformations      : "3.2.0",
+            retrofit_version      : "2.4.0",
+            rxKotlin_version      : "2.1.0",
+    ]
+}
