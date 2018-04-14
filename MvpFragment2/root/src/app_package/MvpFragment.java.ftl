@@ -15,7 +15,7 @@ import ${packageName}.${Model}.model.${ContractName};
  * @author Joy
  */
 
-public class ${FragmentName} extends CommonFragment<${PresenterName},${ModelName}> implements ${ContractName}.View{
+public class ${FragmentName} extends CommonFragment<${ContractName}.View,${PresenterName}>implements ${ContractName}.View{
 
     public static ${FragmentName} newInstance() {
         ${FragmentName} fragment = new ${FragmentName}();
@@ -41,9 +41,9 @@ public class ${FragmentName} extends CommonFragment<${PresenterName},${ModelName
     }
 
     @Override
-     public void initPresenter() {
-        mPresenter.setVM(this, mModel);
-     }
+    public ${ContractName}.View attachPresenterView() {
+        return this;
+    }
 
     @Override
     public void showErrorTip(String msg) {

@@ -16,7 +16,7 @@ import ${packageName}.${Model}.model.${ContractName};
  * @author Joy
  */
 
-public class ${ActivityName} extends CommonActivity<${PresenterName},${ModelName}> implements ${ContractName}.View{
+public class ${ActivityName} extends CommonActivity<${ContractName}.View,${PresenterName}> implements ${ContractName}.View{
 
 		
     public static void start(Context context) {
@@ -31,9 +31,9 @@ public class ${ActivityName} extends CommonActivity<${PresenterName},${ModelName
     }
 
      @Override
-     public void initPresenter() {
-        mPresenter.setVM(this, mModel);
-     }
+    public ${ContractName}.View attachPresenterView() {
+        return this;
+    }
 	
 	@Override
     public void initData() {

@@ -23,7 +23,7 @@ public interface ${ContractName} {
     }
 
 
-    abstract class Presenter extends BasePresenter<View,Model>{
+    abstract class Presenter extends BasePresenter<View>{
 
     }
 

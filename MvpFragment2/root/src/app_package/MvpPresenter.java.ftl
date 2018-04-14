@@ -4,7 +4,7 @@ import android.content.Context;
 
 import ${packageName}.${Model}.contract.${ContractName};
 import ${packageName}.${Model}.model.${ModelName};
-import com.j1ang.base.mvp.BasePresenter;
+
 
 
  /**
@@ -13,8 +13,15 @@ import com.j1ang.base.mvp.BasePresenter;
  * Description:
  * @author Joy
  */
-
+ 
 public class ${PresenterName} extends ${ContractName}.Presenter {
+
+	private ${ModelName} mModel;
+
+	@Override
+    public void onStart() {
+        mModel = new ${ModelName}();
+    }
 
 
 }
