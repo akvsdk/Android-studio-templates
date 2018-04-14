@@ -11,6 +11,7 @@ import com.j1ang.base.utils.L;
  * @author Joy
  */
 public class App extends com.j1ang.base.app.BaseApp {
+
     @Override
     public void onCreate() {
         super.onCreate();
