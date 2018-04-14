@@ -16,15 +16,17 @@ import com.j1ang.base.mvp.BaseView;
 public interface LoginContract {
 
     interface Model extends BaseModel {
+        String setUser();
 
     }
 
     interface View extends BaseView {
-
+        void getUser(String s);
     }
 
 
-    abstract class Presenter extends BasePresenter<View, Model> {
+    abstract class Presenter extends BasePresenter<View> {
+        public abstract void doHttp();
 
     }
 

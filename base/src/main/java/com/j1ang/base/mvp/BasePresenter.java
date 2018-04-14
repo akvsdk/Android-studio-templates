@@ -11,20 +11,22 @@ import com.j1ang.base.rx.RxManager;
  * version:  V1.0
  * Description:基类Presenter
  */
-public abstract class BasePresenter<T,E>{
+public abstract class BasePresenter<V extends BaseView>{
     public Context mContext;
-    public E mModel;
-    public T mView;
+    public V mView;
     public RxManager mRxManage = new RxManager();
 
-    public void setVM(T v, E m) {
+    public void attachView(V v) {
         this.mView = v;
-        this.mModel = m;
-        this.onStart();
+        if (mView != null) {
+            onStart();
+        }
     }
-    public void onStart(){
-    };
+
+    public abstract void onStart();
     public void onDestroy() {
         mRxManage.clear();
+        mView = null;
+        mContext=null;
     }
 }

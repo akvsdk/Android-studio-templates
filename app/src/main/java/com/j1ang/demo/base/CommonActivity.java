@@ -4,8 +4,8 @@ package com.j1ang.demo.base;
 import android.widget.Toast;
 
 import com.j1ang.base.mvp.BaseActivity;
-import com.j1ang.base.mvp.BaseModel;
 import com.j1ang.base.mvp.BasePresenter;
+import com.j1ang.base.mvp.BaseView;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -17,7 +17,7 @@ import butterknife.Unbinder;
  *
  * @author Joy
  */
-public abstract class CommonActivity<T extends BasePresenter, E extends BaseModel> extends BaseActivity<T, E> {
+public abstract class CommonActivity<V extends BaseView, P extends BasePresenter> extends BaseActivity<V, P> {
 
     private Unbinder unbinder;
 

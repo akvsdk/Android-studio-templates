@@ -8,7 +8,6 @@ import android.widget.Switch;
 import com.j1ang.demo.R;
 import com.j1ang.demo.base.CommonFragment;
 import com.j1ang.demo.home.contract.UserContract;
-import com.j1ang.demo.home.model.UserModel;
 import com.j1ang.demo.home.presenter.UserImpl;
 
 import butterknife.BindView;
@@ -22,7 +21,7 @@ import butterknife.OnClick;
  * @author Joy
  */
 
-public class UserFragment extends CommonFragment<UserImpl, UserModel> implements UserContract.View {
+public class UserFragment extends CommonFragment<UserContract.View, UserImpl> implements UserContract.View {
 
     @BindView(R.id.switch1)
     Switch mSwitch1;
@@ -40,15 +39,17 @@ public class UserFragment extends CommonFragment<UserImpl, UserModel> implements
     public void initView(View view) {
     }
 
-    @Override
-    public void initPresenter() {
-        mPresenter.setVM(this, mModel);
-    }
 
     @Override
     public int setLayoutId() {
         return R.layout.fragment_home_user;
     }
+
+    @Override
+    public UserContract.View attachPresenterView() {
+        return this;
+    }
+
 
     @Override
     public void initData() {

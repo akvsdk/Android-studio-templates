@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.j1ang.base.rx.RxManager;
-import com.j1ang.base.utils.NullUtil;
 import com.j1ang.base.utils.TUtil;
 import com.j1ang.base.utils.ToastUitl;
 
@@ -52,11 +51,11 @@ import com.j1ang.base.utils.ToastUitl;
 //    public void initView() {
 //    }
 //}
-public abstract class BaseFragment<T extends BasePresenter, E> extends Fragment {
-    public T mPresenter;
-    public E mModel;
-    public RxManager mRxManager;
+public abstract class BaseFragment<V extends BaseView, P extends BasePresenter> extends Fragment {
+    public P mPresenter;
+    protected V mView;
     protected View rootView;
+    private volatile RxManager mRxManager;
     //控件是否初始化
     private boolean isViewCreated;
     //数据是否加载完成
@@ -89,13 +88,15 @@ public abstract class BaseFragment<T extends BasePresenter, E> extends Fragment 
         if (parent != null) {
             parent.removeView(rootView);
         }
-        mRxManager = new RxManager();
-        if (NullUtil.isNotNull(mPresenter) || NullUtil.isNotNull(mModel)) {
-            mPresenter = TUtil.getT(this, 0);
-            mModel = TUtil.getT(this, 1);
-        }
+        mPresenter = TUtil.getT(this, 1);
+        mView = this.attachPresenterView();
         if (mPresenter != null) {
-            mPresenter.mContext = this.getActivity();
+            mPresenter.mContext = this.getContext();
+            if (mView != null) {
+                mPresenter.attachView(mView);
+            } else {
+                throw new NullPointerException("presenter不为空时，view不能为空");
+            }
         }
         isViewCreated = true;
         setHasOptionsMenu(true);
@@ -106,9 +107,6 @@ public abstract class BaseFragment<T extends BasePresenter, E> extends Fragment 
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         initView(view);
-        if (mPresenter != null) {
-            initPresenter();
-        }
     }
 
     @Override
@@ -134,13 +132,11 @@ public abstract class BaseFragment<T extends BasePresenter, E> extends Fragment 
     //初始化view
     public abstract void initView(View view);
 
-    //简单页面无需mvp就不用管此方法即可,完美兼容各种实际场景的变通
-    public void initPresenter() {
-
-    }
-
     //获取布局文件
     public abstract int setLayoutId();
+
+    //简单页面无需mvp就不用管此方法即可,完美兼容各种实际场景的变通
+    public abstract V attachPresenterView();
 
     //初始化数据源
     public abstract void initData();

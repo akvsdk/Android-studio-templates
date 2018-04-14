@@ -22,6 +22,7 @@ public class L {
      */
     public static void init(final boolean isLogEnable) {
         FormatStrategy formatStrategy = PrettyFormatStrategy.newBuilder()
+                .logStrategy(new LogCatStrategy())
                 .showThreadInfo(true)  // (Optional) Whether to show thread info or not. Default true
                 .methodCount(0)         // (Optional) How many method line to show. Default 2
                 .methodOffset(0)        // (Optional) Skips some method invokes in stack trace. Default 5

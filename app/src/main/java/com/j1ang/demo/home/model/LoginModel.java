@@ -12,4 +12,8 @@ import com.j1ang.demo.home.contract.LoginContract;
 
 public class LoginModel implements LoginContract.Model {
 
+    @Override
+    public String setUser() {
+        return "SB110";
+    }
 }

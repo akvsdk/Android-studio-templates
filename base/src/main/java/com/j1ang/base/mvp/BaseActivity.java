@@ -49,33 +49,35 @@ import com.j1ang.base.utils.ToastUitl;
 //    public void initView() {
 //    }
 //}
-public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel> extends AppCompatActivity {
-    public T mPresenter;
-    public E mModel;
+public abstract class BaseActivity<V extends BaseView, P extends BasePresenter> extends AppCompatActivity {
+    public P mPresenter;
     public Context mContext;
     public RxManager mRxManager;
+    protected V mView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mRxManager = new RxManager();
         doBeforeSetcontentView();
         Bundle extras = getIntent().getExtras();
         setContentView(setLayoutId());
-
         mContext = this;
         if (null != extras) {
             getBundleExtras(extras);
         }
-
-        mPresenter =    TUtil.getT(this, 0);
-        mModel = TUtil.getT(this, 1);
+        mPresenter = TUtil.getT(this, 1);
+        mView = this.attachPresenterView();
 
         if (mPresenter != null) {
             mPresenter.mContext = this;
+            if (mView != null) {
+                mPresenter.attachView(mView);
+            } else {
+                throw new NullPointerException("presenter不为空时，view不能为空");
+            }
         }
+
         initView();
-        initPresenter();
         initData();
     }
 
@@ -96,20 +98,44 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
     //获取布局文件
     public abstract int setLayoutId();
 
+    public void getBundleExtras(Bundle extras) {
+    }
+
+    //简单页面无需mvp就不用管此方法即可,完美兼容各种实际场景的变通
+    public abstract V attachPresenterView();
+
     //初始化view
     public abstract void initView();
 
     public abstract void initData();
 
-    //简单页面无需mvp就不用管此方法即可,完美兼容各种实际场景的变通
-    public void initPresenter() {
-        // mPresenter.setVM(this, mModel);
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mPresenter != null)
+            mPresenter.onDestroy();
+        if (mRxManager != null)
+            mRxManager.clear();
+        AppManager.getAppManager().finishActivity(this);
     }
 
-    public void getBundleExtras(Bundle extras) {
+    /**
+     * 获取rxmanager
+     * 管理单个act rxjava生命周期
+     *
+     * @return
+     */
+    public RxManager getRxManager() {
+        if (mRxManager == null) {
+            synchronized (RxManager.class) {
+                if (mRxManager == null) {
+                    mRxManager = new RxManager();
+                }
+            }
+
+        }
+        return mRxManager;
     }
-
-
 
     /**
      * 短暂显示Toast提示(来自String)
@@ -140,22 +166,12 @@ public abstract class BaseActivity<T extends BasePresenter, E extends BaseModel>
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-    }
-
-    @Override
     protected void onPause() {
         super.onPause();
     }
 
-
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (mPresenter != null)
-            mPresenter.onDestroy();
-        mRxManager.clear();
-        AppManager.getAppManager().finishActivity(this);
+    protected void onResume() {
+        super.onResume();
     }
 }

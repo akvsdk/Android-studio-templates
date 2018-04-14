@@ -3,10 +3,10 @@ package com.j1ang.demo.home.ui.activity;
 import android.content.Context;
 import android.content.Intent;
 
+import com.j1ang.base.utils.L;
 import com.j1ang.demo.R;
 import com.j1ang.demo.base.CommonActivity;
 import com.j1ang.demo.home.contract.LoginContract;
-import com.j1ang.demo.home.model.LoginModel;
 import com.j1ang.demo.home.presenter.LoginImpl;
 
 /**
@@ -17,7 +17,7 @@ import com.j1ang.demo.home.presenter.LoginImpl;
  * @author Joy
  */
 
-public class LoginActivity extends CommonActivity<LoginImpl, LoginModel> implements LoginContract.View {
+public class LoginActivity extends CommonActivity<LoginContract.View, LoginImpl> implements LoginContract.View {
 
 
     public static void start(Context context) {
@@ -32,18 +32,23 @@ public class LoginActivity extends CommonActivity<LoginImpl, LoginModel> impleme
     }
 
     @Override
-    public void initData() {
-
+    public LoginContract.View attachPresenterView() {
+        return this;
     }
 
     @Override
-    public void initPresenter() {
-        mPresenter.setVM(this, mModel);
+    public void initData() {
+        mPresenter.doHttp();
     }
+
 
     @Override
     public void showErrorTip(String msg) {
         showErrorToast(msg);
     }
 
+    @Override
+    public void getUser(String s) {
+        L.d(s);
+    }
 }

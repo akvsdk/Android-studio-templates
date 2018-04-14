@@ -14,4 +14,8 @@ import com.j1ang.demo.home.contract.UserContract;
 public class UserImpl extends UserContract.Presenter {
 
 
+    @Override
+    public void onStart() {
+
+    }
 }
